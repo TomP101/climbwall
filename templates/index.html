@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% block content %}
+<section>
+    <h1>Witamy na ClimbWall</h1>
+    <p>Prosty katalog dróg na naszej ściance wspinaczkowej.</p>
+</section>
+
+<section>
+    <h2>Wyróżnione drogi</h2>
+    <div class="routes-grid">
+        {% for route in featured_routes %}
+        <article class="route-card">
+            <img src="{{ route.image_path }}" alt="{{ route.name }}">
+            <h3>{{ route.name }}</h3>
+            <p>Wycena: {{ route.grade }}</p>
+            <p>Typ: {{ route.type }}</p>
+            <p>Sektor: {{ route.sector }}</p>
+        </article>
+        {% endfor %}
+    </div>
+</section>
+{% endblock %}

@@ -1,0 +1,37 @@
+version: "3.9"
+
+services:
+  db:
+    image: mysql:8.0
+    container_name: climbwall-db
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpassword
+      MYSQL_DATABASE: climbwall
+      MYSQL_USER: climbuser
+      MYSQL_PASSWORD: climbpass
+    volumes:
+      - db_data:/var/lib/mysql
+    ports:
+      # Opcjonalne – żeby móc łączyć się z MySQL z hosta (np. Workbench)
+      - "3306:3306"
+
+  web:
+    build: .
+    container_name: climbwall-web
+    restart: always
+    depends_on:
+      - db
+    environment:
+      DB_USER: climbuser
+      DB_PASSWORD: climbpass
+      DB_HOST: db          # uwaga: nazwa serwisu z compose
+      DB_NAME: climbwall
+    ports:
+      - "5000:5000"
+    # Opcjonalnie – jeśli chcesz live-reload kodu z hosta
+    # volumes:
+    #   - .:/app
+
+volumes:
+  db_data:

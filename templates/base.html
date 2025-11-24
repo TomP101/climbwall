@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="pl">
+<head>
+    <meta charset="utf-8">
+    <title>ClimbWall</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <script defer src="{{ url_for('static', filename='main.js') }}"></script>
+</head>
+<body>
+<header class="main-header">
+    <div class="header-left">
+        <div class="logo">ClimbWall</div>
+        <nav>
+            <ul>
+                <li><a href="{{ url_for('index') }}">Strona główna</a></li>
+                <li><a href="{{ url_for('routes') }}">Drogi</a></li>
+                <li><a href="{{ url_for('login') }}">Logowanie</a></li>
+                <li><a href="{{ url_for('admin') }}">Panel admina</a></li>
+            </ul>
+        </nav>
+    </div>
+
+    <div class="header-right">
+        <div class="user-info">
+            {% if current_user_email %}
+                <span>Zalogowany jako: {{ current_user_email }} ({{ current_user_role }})</span>
+                <a href="{{ url_for('logout') }}">Wyloguj</a>
+            {% else %}
+                <span>Nie jesteś zalogowany</span>
+            {% endif %}
+        </div>
+        <button id="theme-toggle" class="theme-toggle-btn">🌙 Tryb ciemny</button>
+    </div>
+</header>
+
+<!-- komunikaty flash -->
+{% with messages = get_flashed_messages(with_categories=true) %}
+  {% if messages %}
+    <div class="flash-container">
+      {% for category, message in messages %}
+        <div class="flash flash-{{ category }}">{{ message }}</div>
+      {% endfor %}
+    </div>
+  {% endif %}
+{% endwith %}
+
+<main>
+    {% block content %}{% endblock %}
+</main>
+
+<footer>
+    <p>Ścianka wspinaczkowa ClimbWall – kontakt: kontakt@climbwall.pl</p>
+</footer>
+</body>
+</html>

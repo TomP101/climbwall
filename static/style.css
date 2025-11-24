@@ -1,0 +1,576 @@
+/* --------------------------------------------------
+   ZMIENNE KOLORÓW – LIGHT THEME
+-------------------------------------------------- */
+:root {
+    --color-bg: #f3f7f4;
+    --color-bg-card: #ffffff;
+    --color-bg-header: #064e3b;
+    --color-bg-footer: #022c22;
+    --color-primary: #16a34a;
+    --color-primary-dark: #166534;
+    --color-text: #0f172a;
+    --color-text-muted: #6b7280;
+    --color-border-subtle: rgba(15, 23, 42, 0.08);
+    --shadow-soft: 0 8px 24px rgba(15, 23, 42, 0.12);
+    --radius-lg: 18px;
+    --radius-pill: 999px;
+}
+
+/* --------------------------------------------------
+   DARK THEME – nadpisanie zmiennych
+-------------------------------------------------- */
+body.dark-theme {
+    --color-bg: #020617;
+    --color-bg-card: #020617;
+    --color-bg-header: #022c22;
+    --color-bg-footer: #000000;
+    --color-primary: #22c55e;
+    --color-primary-dark: #16a34a;
+    --color-text: #e5e7eb;
+    --color-text-muted: #9ca3af;
+    --color-border-subtle: rgba(148, 163, 184, 0.3);
+    --shadow-soft: 0 10px 30px rgba(0, 0, 0, 0.8);
+}
+
+/* --------------------------------------------------
+   GLOBAL
+-------------------------------------------------- */
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    min-height: 100vh;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    background: radial-gradient(circle at top left, rgba(34, 197, 94, 0.12), transparent 55%),
+                radial-gradient(circle at bottom right, rgba(16, 185, 129, 0.12), transparent 55%),
+                var(--color-bg);
+    color: var(--color-text);
+    transition: background 0.3s ease, color 0.3s ease;
+}
+
+main {
+    padding: 24px clamp(16px, 4vw, 48px);
+    max-width: 1200px;
+    margin: 0 auto 40px auto;
+}
+
+/* --------------------------------------------------
+   HEADER
+-------------------------------------------------- */
+.main-header {
+    background: linear-gradient(90deg, var(--color-bg-header), #15803d);
+    color: #ecfdf5;
+    padding: 10px clamp(16px, 4vw, 48px);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    position: sticky;
+    top: 0;
+    z-index: 20;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.35);
+}
+
+.header-left {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+}
+
+.logo {
+    font-weight: 800;
+    font-size: 1.4rem;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+}
+
+nav ul {
+    list-style: none;
+    display: flex;
+    gap: 14px;
+    padding: 0;
+    margin: 0;
+}
+
+nav a {
+    color: #ecfdf5;
+    text-decoration: none;
+    font-size: 0.95rem;
+    padding: 6px 10px;
+    border-radius: 999px;
+    transition: background 0.2s ease, transform 0.1s ease;
+}
+
+nav a:hover {
+    background: rgba(22, 163, 74, 0.9);
+    transform: translateY(-1px);
+}
+
+.header-right {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+}
+
+.user-info {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.85rem;
+}
+
+.user-info a {
+    color: #bbf7d0;
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.user-info a:hover {
+    text-decoration: underline;
+}
+
+/* --------------------------------------------------
+   THEME TOGGLE BUTTON
+-------------------------------------------------- */
+.theme-toggle-btn {
+    border-radius: var(--radius-pill);
+    border: 1px solid rgba(209, 250, 229, 0.7);
+    background: rgba(22, 163, 74, 0.15);
+    color: #ecfdf5;
+    padding: 6px 14px;
+    font-size: 0.85rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    transition: background 0.2s ease, transform 0.1s ease, border-color 0.2s ease;
+}
+
+.theme-toggle-btn:hover {
+    background: rgba(22, 163, 74, 0.35);
+    transform: translateY(-1px);
+}
+
+body.dark-theme .theme-toggle-btn {
+    border-color: rgba(187, 247, 208, 0.8);
+}
+
+/* --------------------------------------------------
+   FLASH MESSAGES
+-------------------------------------------------- */
+.flash-container {
+    max-width: 1200px;
+    margin: 12px auto 0 auto;
+    padding: 0 16px;
+}
+
+.flash {
+    padding: 10px 14px;
+    border-radius: 10px;
+    margin-bottom: 6px;
+    font-size: 0.9rem;
+    border: 1px solid transparent;
+}
+
+.flash-success {
+    background: rgba(22, 163, 74, 0.12);
+    color: #14532d;
+    border-color: rgba(22, 163, 74, 0.4);
+}
+
+.flash-error {
+    background: rgba(248, 113, 113, 0.12);
+    color: #7f1d1d;
+    border-color: rgba(239, 68, 68, 0.4);
+}
+
+body.dark-theme .flash-success {
+    background: rgba(34, 197, 94, 0.1);
+    color: #bbf7d0;
+    border-color: rgba(34, 197, 94, 0.5);
+}
+body.dark-theme .flash-error {
+    background: rgba(239, 68, 68, 0.08);
+    color: #fecaca;
+    border-color: rgba(248, 113, 113, 0.5);
+}
+
+/* --------------------------------------------------
+   TYPOGRAFIA / LAYOUT PODSTAWOWY
+-------------------------------------------------- */
+h1, h2, h3 {
+    margin-top: 0;
+    color: var(--color-text);
+}
+
+h1 {
+    font-size: 2rem;
+    margin-bottom: 12px;
+}
+
+h2 {
+    font-size: 1.4rem;
+    margin: 18px 0 8px 0;
+}
+
+p {
+    margin: 0 0 8px 0;
+    color: var(--color-text);
+}
+
+/* --------------------------------------------------
+   ROUTES GRID – DUŻE KAFELKI
+-------------------------------------------------- */
+.routes-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 24px;
+    margin-top: 12px;
+}
+
+.route-card {
+    background: var(--color-bg-card);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-soft);
+    overflow: hidden;
+    border: 1px solid var(--color-border-subtle);
+    display: flex;
+    flex-direction: column;
+    transition: transform 0.15s ease, box-shadow 0.15s ease, border-color 0.15s ease;
+}
+
+.route-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 14px 36px rgba(15, 23, 42, 0.25);
+    border-color: rgba(34, 197, 94, 0.5);
+}
+
+.route-card img {
+    width: 100%;
+    height: 230px;
+    object-fit: cover;
+    display: block;
+}
+
+.route-card h3 {
+    font-size: 1.2rem;
+    margin: 10px 0 6px 0;
+}
+
+.route-card p {
+    font-size: 0.9rem;
+    color: var(--color-text-muted);
+}
+
+.route-card .grade {
+    font-weight: 600;
+    color: var(--color-primary-dark);
+}
+
+.route-card > *:not(img) {
+    padding: 0 14px;
+}
+
+.route-card > *:last-child {
+    padding-bottom: 14px;
+}
+
+.route-card a {
+    color: var(--color-primary);
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.route-card a:hover {
+    text-decoration: underline;
+}
+
+/* --------------------------------------------------
+   ROUTE DETAIL PAGE
+-------------------------------------------------- */
+.route-detail {
+    max-width: 900px;
+    margin: 0 auto;
+    background: var(--color-bg-card);
+    border-radius: 24px;
+    border: 1px solid var(--color-border-subtle);
+    box-shadow: var(--shadow-soft);
+    padding: 22px;
+}
+
+.route-detail-image {
+    width: 100%;
+    max-height: 420px;
+    object-fit: cover;
+    border-radius: 18px;
+    margin-bottom: 18px;
+}
+
+.route-meta {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 18px 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px 18px;
+    font-size: 0.95rem;
+    color: var(--color-text-muted);
+}
+
+.route-meta li strong {
+    color: var(--color-text);
+}
+
+.video-wrapper {
+    position: relative;
+    padding-bottom: 56.25%;
+    height: 0;
+    margin-top: 10px;
+    border-radius: 18px;
+    overflow: hidden;
+    box-shadow: var(--shadow-soft);
+}
+
+.video-wrapper iframe {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+}
+
+/* --------------------------------------------------
+   FILTRY NAD LISTĄ DRÓG
+-------------------------------------------------- */
+.filters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 18px;
+    align-items: center;
+}
+
+.filters label {
+    font-size: 0.85rem;
+    color: var(--color-text-muted);
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+}
+
+.filters select {
+    border-radius: 999px;
+    border: 1px solid var(--color-border-subtle);
+    padding: 4px 10px;
+    font-size: 0.85rem;
+    background: var(--color-bg-card);
+    color: var(--color-text);
+}
+
+.filters button {
+    border-radius: 999px;
+    border: 1px solid var(--color-primary);
+    background: transparent;
+    color: var(--color-primary-dark);
+    padding: 5px 12px;
+    font-size: 0.85rem;
+    cursor: pointer;
+    transition: background 0.2s ease, color 0.2s ease, transform 0.1s ease;
+}
+
+.filters button:hover {
+    background: var(--color-primary);
+    color: #ecfdf5;
+    transform: translateY(-1px);
+}
+
+/* --------------------------------------------------
+   FORMULARZE
+-------------------------------------------------- */
+form label {
+    display: block;
+    margin-bottom: 10px;
+    font-size: 0.9rem;
+    color: var(--color-text);
+}
+
+form input[type="text"],
+form input[type="email"],
+form input[type="password"],
+form input[type="url"],
+form textarea {
+    width: 100%;
+    max-width: 320px;
+    padding: 6px 8px;
+    border-radius: 8px;
+    border: 1px solid var(--color-border-subtle);
+    background: var(--color-bg-card);
+    color: var(--color-text);
+}
+
+form textarea {
+    min-height: 80px;
+    max-width: 480px;
+}
+
+form button[type="submit"],
+button[type="submit"] {
+    border-radius: 999px;
+    border: none;
+    background: var(--color-primary);
+    color: #ecfdf5;
+    padding: 7px 18px;
+    font-size: 0.9rem;
+    cursor: pointer;
+    font-weight: 500;
+    margin-top: 6px;
+    transition: background 0.2s ease, transform 0.1s ease, box-shadow 0.1s ease;
+    box-shadow: 0 8px 18px rgba(22, 163, 74, 0.45);
+}
+
+form button[type="submit"]:hover,
+button[type="submit"]:hover {
+    background: var(--color-primary-dark);
+    transform: translateY(-1px);
+}
+
+form button[type="submit"]:active,
+button[type="submit"]:active {
+    transform: translateY(0);
+    box-shadow: 0 4px 10px rgba(22, 163, 74, 0.4);
+}
+
+/* --------------------------------------------------
+   TABELA W PANELU ADMINA
+-------------------------------------------------- */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 12px;
+    font-size: 0.9rem;
+}
+
+thead {
+    background: rgba(22, 163, 74, 0.06);
+}
+
+th, td {
+    padding: 8px 10px;
+    border-bottom: 1px solid rgba(148, 163, 184, 0.4);
+}
+
+th {
+    text-align: left;
+    font-weight: 600;
+}
+
+tbody tr:hover {
+    background: rgba(22, 163, 74, 0.03);
+}
+
+/* --------------------------------------------------
+   STOPKA
+-------------------------------------------------- */
+footer {
+    background: var(--color-bg-footer);
+    color: #e5e7eb;
+    text-align: center;
+    padding: 12px;
+    font-size: 0.85rem;
+}
+
+/* --------------------------------------------------
+   RESPONSYWNOŚĆ
+-------------------------------------------------- */
+@media (max-width: 768px) {
+    .main-header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .header-left {
+        width: 100%;
+        justify-content: space-between;
+    }
+
+    nav ul {
+        flex-wrap: wrap;
+    }
+
+    .header-right {
+        width: 100%;
+        justify-content: space-between;
+    }
+
+    main {
+        padding-inline: 16px;
+    }
+}
+/* --------------------------------------------------
+   BADGE (WYCENA, TYP, SEKTOR)
+-------------------------------------------------- */
+.route-badges,
+.route-card-badges {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin: 6px 0 10px 0;
+}
+
+.badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 4px 10px;
+    border-radius: 999px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+    border: 1px solid var(--color-border-subtle);
+    background: rgba(148, 163, 184, 0.06);
+    color: var(--color-text-muted);
+}
+
+.badge-grade {
+    background: rgba(34, 197, 94, 0.12);
+    border-color: rgba(34, 197, 94, 0.6);
+    color: var(--color-primary-dark);
+}
+
+.badge-type {
+    background: rgba(56, 189, 248, 0.08);
+    border-color: rgba(56, 189, 248, 0.4);
+}
+
+.badge-sector {
+    background: rgba(180, 83, 9, 0.08);
+    border-color: rgba(245, 158, 11, 0.5);
+}
+
+/* w dark mode trochę mocniejsze kolory */
+body.dark-theme .badge {
+    background: rgba(15, 23, 42, 0.7);
+    border-color: rgba(148, 163, 184, 0.5);
+    color: #e5e7eb;
+}
+
+body.dark-theme .badge-grade {
+    background: rgba(22, 163, 74, 0.3);
+    border-color: rgba(34, 197, 94, 0.8);
+}
+
+body.dark-theme .badge-type {
+    background: rgba(56, 189, 248, 0.25);
+    border-color: rgba(56, 189, 248, 0.7);
+}
+
+body.dark-theme .badge-sector {
+    background: rgba(234, 179, 8, 0.25);
+    border-color: rgba(250, 204, 21, 0.8);
+}

@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+{% block content %}
+<article class="route-detail">
+    <header class="route-detail-header">
+        <div>
+            <h1>{{ route.name }}</h1>
+
+            <div class="route-badges">
+                <span class="badge badge-grade">{{ route.grade }}</span>
+                <span class="badge badge-type">
+                    {% if route.type == 'boulder' %}Boulder{% else %}Lina{% endif %}
+                </span>
+                <span class="badge badge-sector">{{ route.sector }}</span>
+            </div>
+        </div>
+    </header>
+
+    {% if route.image_path %}
+        <img src="{{ route.image_path }}" alt="{{ route.name }}" class="route-detail-image">
+    {% endif %}
+
+    <ul class="route-meta">
+        <li><strong>Wycena:</strong> {{ route.grade }}</li>
+        <li><strong>Typ:</strong> {{ route.type }}</li>
+        <li><strong>Sektor:</strong> {{ route.sector }}</li>
+        <li><strong>Dodano:</strong> {{ route.created_at.strftime('%Y-%m-%d %H:%M') if route.created_at else '-' }}</li>
+    </ul>
+
+    <section>
+        <h2>Opis</h2>
+        <p>{{ route.description or "Brak opisu." }}</p>
+    </section>
+
+    {% if route.video_url %}
+    <section>
+        <h2>Wideo z przejścia</h2>
+        {% if 'youtube.com' in route.video_url or 'youtu.be' in route.video_url %}
+            <div class="video-wrapper">
+                <iframe
+                    src="{{ route.video_url | replace('watch?v=', 'embed/') }}"
+                    frameborder="0"
+                    allowfullscreen>
+                </iframe>
+            </div>
+        {% else %}
+            <p><a href="{{ route.video_url }}" target="_blank">Zobacz wideo</a></p>
+        {% endif %}
+    </section>
+    {% endif %}
+
+    <p style="margin-top: 18px;">
+        <a href="{{ url_for('routes') }}">← Wróć do listy dróg</a>
+    </p>
+</article>
+{% endblock %}

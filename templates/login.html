@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% block content %}
+<h1>Logowanie</h1>
+
+<p>Domyślny admin (na dev):<br>
+   <strong>email:</strong> admin@climbwall.local<br>
+   <strong>hasło:</strong> admin123
+</p>
+
+<form method="post" action="{{ url_for('login') }}">
+    <label>
+        E-mail:
+        <input type="email" name="email" required>
+    </label>
+    <label>
+        Hasło:
+        <input type="password" name="password" required>
+    </label>
+    <button type="submit">Zaloguj</button>
+</form>
+{% endblock %}

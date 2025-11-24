@@ -1,0 +1,76 @@
+{% extends "base.html" %}
+{% block content %}
+<h1>Lista dróg wspinaczkowych</h1>
+
+<section class="filters">
+    <label>
+        Typ:
+        <select id="filter-type">
+            <option value="all">Wszystkie</option>
+            <option value="boulder">Boulder</option>
+            <option value="lina">Lina</option>
+        </select>
+    </label>
+
+    <label>
+        Minimalna wycena:
+        <select id="filter-grade">
+            <option value="all">Dowolna</option>
+            <option value="5a">5a</option>
+            <option value="5b">5b</option>
+            <option value="5c">5c</option>
+            <option value="6a">6a</option>
+            <option value="6b">6b</option>
+            <option value="7a">7a</option>
+        </select>
+    </label>
+
+    <label>
+        Sektor:
+        <select id="filter-sector">
+            <option value="all">Wszystkie</option>
+            <option value="Sector A">Sector A</option>
+            <option value="Sector B">Sector B</option>
+            <option value="Sector C">Sector C</option>
+        </select>
+    </label>
+
+    <button id="sort-grade-asc">Sortuj po wycenie rosnąco</button>
+    <button id="sort-grade-desc">Sortuj po wycenie malejąco</button>
+</section>
+
+<section id="routes-list" class="routes-grid">
+    {% for route in routes %}
+    <article class="route-card"
+             data-type="{{ route.type }}"
+             data-grade="{{ route.grade }}"
+             data-sector="{{ route.sector }}">
+        <img src="{{ route.image_path or '/static/images/sample1.jpg' }}" alt="{{ route.name }}">
+        <h3>{{ route.name }}</h3>
+
+        <p class="route-card-badges">
+            <span class="badge badge-grade">{{ route.grade }}</span>
+            <span class="badge badge-type">
+                {% if route.type == 'boulder' %}Boulder{% else %}Lina{% endif %}
+            </span>
+            <span class="badge badge-sector">{{ route.sector }}</span>
+        </p>
+
+        <p>{{ route.description }}</p>
+
+
+        <p>
+            <a href="{{ url_for('route_detail', route_id=route.id) }}">Szczegóły</a>
+            {% if route.video_url %}
+                | <a href="{{ route.video_url }}" target="_blank">Wideo</a>
+            {% endif %}
+        </p>
+    </article>
+    {% endfor %}
+</section>
+
+<section>
+    <h2>Propozycja dnia</h2>
+    <div id="route-of-the-day"></div>
+</section>
+{% endblock %}
