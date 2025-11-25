@@ -10,9 +10,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const body = document.body;
     const THEME_KEY = "climbwall-theme";
 
-    /* -------------------------------
-       FILTROWANIE, SORTOWANIE, PROPOZYCJA DNIA
-    -------------------------------- */
+
     if (routesList) {
         const cards = Array.from(routesList.querySelectorAll(".route-card"));
 
@@ -71,9 +69,7 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     }
 
-    /* -------------------------------
-       DARK / LIGHT THEME
-    -------------------------------- */
+
     function updateThemeButtonLabel(theme) {
         if (!themeToggle) return;
         if (theme === "dark") {
@@ -92,7 +88,6 @@ document.addEventListener("DOMContentLoaded", () => {
         updateThemeButtonLabel(theme);
     }
 
-    // odczyt z localStorage
     const storedTheme = localStorage.getItem(THEME_KEY);
     if (storedTheme === "dark" || storedTheme === "light") {
         applyTheme(storedTheme);
