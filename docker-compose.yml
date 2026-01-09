@@ -1,5 +1,3 @@
-version: "3.9"
-
 services:
   db:
     image: mysql:8.0
@@ -14,13 +12,19 @@ services:
       - db_data:/var/lib/mysql
     ports:
       - "3306:3306"
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-prootpassword"]
+      interval: 5s
+      timeout: 3s
+      retries: 30
 
   web:
     build: .
     container_name: climbwall-web
     restart: always
     depends_on:
-      - db
+      db:
+        condition: service_healthy
     environment:
       DB_USER: climbuser
       DB_PASSWORD: climbpass
@@ -28,5 +32,6 @@ services:
       DB_NAME: climbwall
     ports:
       - "5000:5000"
+
 volumes:
   db_data:

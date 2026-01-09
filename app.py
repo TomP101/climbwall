@@ -59,6 +59,18 @@ class User(db.Model):
 
     def __repr__(self):
         return f"<User {self.email} ({self.role})>"
+class Comment(db.Model):
+    __tablename__ = "comments"
+
+    id = db.Column(db.Integer, primary_key=True)
+    route_id = db.Column(db.Integer, db.ForeignKey("routes.id"), nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey("users.id"), nullable=False)
+
+    content = db.Column(db.Text, nullable=False)
+    created_at = db.Column(db.DateTime, default=datetime.utcnow)
+
+    route = db.relationship("Route", backref=db.backref("comments", lazy=True, cascade="all, delete-orphan"))
+    user = db.relationship("User", backref=db.backref("comments", lazy=True))
 
 
 def init_db():
@@ -73,8 +85,8 @@ def init_db():
                 type="boulder",
                 sector="Sector A",
                 description="Krótki, siłowy boulder na krawądkach.",
-                image_path="/static/images/sample1.jpg",
-                video_url="https://youtu.be/example1",
+                image_path="/static/images/scianka_zdjecie.png",
+                video_url="https://www.youtube.com/watch?v=QAy0aQA6OSc&t=34s",
             ),
             Route(
                 name="Blue Line",
@@ -82,15 +94,14 @@ def init_db():
                 type="lina",
                 sector="Sector B",
                 description="Dłuższa droga na linę, techniczna.",
-                image_path="/static/images/sample2.jpg",
-                video_url="",
+                image_path="/static/images/scianke_zdjecie_2.png",
+                video_url="https://www.youtube.com/watch?v=QAy0aQA6OSc&t=34s",
             ),
         ]
         db.session.add_all(sample_routes)
         db.session.commit()
         print("🔹 Dodano przykładowe drogi do bazy.")
 
-    # domyślny admin
     admin_email = "admin@climbwall.local"
     admin_user = User.query.filter_by(email=admin_email).first()
     if not admin_user:
@@ -127,6 +138,16 @@ def admin_required(f):
         return f(*args, **kwargs)
     return wrapper
 
+def login_required(f):
+    @wraps(f)
+    def wrapper(*args, **kwargs):
+        if not session.get("user_id"):
+            flash("Musisz być zalogowany, aby dodać komentarz.", "error")
+            return redirect(url_for("login"))
+        return f(*args, **kwargs)
+    return wrapper
+
+
 @app.route("/")
 def index():
     featured = Route.query.limit(2).all()
@@ -141,7 +162,29 @@ def routes():
 @app.route("/routes/<int:route_id>")
 def route_detail(route_id):
     route = Route.query.get_or_404(route_id)
-    return render_template("route_detail.html", route=route)
+    comments = Comment.query.filter_by(route_id=route_id).order_by(Comment.created_at.desc()).all()
+    return render_template("route_detail.html", route=route, comments=comments)
+
+@app.route("/routes/<int:route_id>/comment", methods=["POST"])
+@login_required
+def add_comment(route_id):
+    route = Route.query.get_or_404(route_id)
+    content = request.form.get("content", "").strip()
+
+    if not content:
+        flash("Komentarz nie może być pusty.", "error")
+        return redirect(url_for("route_detail", route_id=route_id))
+
+    comment = Comment(
+        route_id=route.id,
+        user_id=session["user_id"],
+        content=content
+    )
+    db.session.add(comment)
+    db.session.commit()
+
+    flash("Dodano komentarz.", "success")
+    return redirect(url_for("route_detail", route_id=route_id))
 
 @app.route("/login", methods=["GET", "POST"])
 def login():
@@ -179,11 +222,15 @@ def logout():
 @app.route("/register", methods=["GET", "POST"])
 def register():
     if request.method == "POST":
-        email = request.form.get("email", "").strip()
+        email = request.form.get("email", "").strip().lower()
         password = request.form.get("password", "").strip()
 
         if not email or not password:
             flash("Podaj e-mail i hasło.", "error")
+            return render_template("register.html")
+
+        if len(password) < 6:
+            flash("Hasło musi mieć co najmniej 6 znaków.", "error")
             return render_template("register.html")
 
         existing = User.query.filter_by(email=email).first()
@@ -203,6 +250,7 @@ def register():
         return redirect(url_for("login"))
 
     return render_template("register.html")
+
 
 @app.route("/admin")
 @admin_required

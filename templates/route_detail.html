@@ -48,6 +48,43 @@
     </section>
     {% endif %}
 
+    <section style="margin-top: 18px;">
+        <h2>Komentarze</h2>
+
+        {% if current_user_email %}
+            <form method="post" action="{{ url_for('add_comment', route_id=route.id) }}">
+                <label>
+                    Dodaj komentarz:
+                    <textarea name="content" required placeholder="Napisz coś..." style="max-width: 900px;"></textarea>
+                </label>
+                <button type="submit">Dodaj</button>
+            </form>
+        {% else %}
+            <p>
+                <a href="{{ url_for('login') }}">Zaloguj się</a>, aby dodać komentarz.
+            </p>
+        {% endif %}
+
+        <div style="margin-top: 14px;">
+            {% if comments and comments|length > 0 %}
+                {% for c in comments %}
+                    <div style="padding: 10px 12px; border: 1px solid var(--color-border-subtle); border-radius: 12px; margin-bottom: 10px;">
+                        <div style="display:flex; justify-content:space-between; gap:10px; flex-wrap:wrap;">
+                            <strong>{{ c.user.email }}</strong>
+                            <span style="color: var(--color-text-muted); font-size: 0.85rem;">
+                                {{ c.created_at.strftime('%Y-%m-%d %H:%M') }}
+                            </span>
+                        </div>
+                        <p style="margin-top: 6px; color: var(--color-text); white-space: pre-wrap;">{{ c.content }}</p>
+                    </div>
+                {% endfor %}
+            {% else %}
+                <p>Brak komentarzy. Bądź pierwszy 🙂</p>
+            {% endif %}
+        </div>
+    </section>
+
+
     <p style="margin-top: 18px;">
         <a href="{{ url_for('routes') }}">← Wróć do listy dróg</a>
     </p>
