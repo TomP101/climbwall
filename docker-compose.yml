@@ -13,7 +13,6 @@ services:
     volumes:
       - db_data:/var/lib/mysql
     ports:
-      # Opcjonalne – żeby móc łączyć się z MySQL z hosta (np. Workbench)
       - "3306:3306"
 
   web:
@@ -25,13 +24,9 @@ services:
     environment:
       DB_USER: climbuser
       DB_PASSWORD: climbpass
-      DB_HOST: db          # uwaga: nazwa serwisu z compose
+      DB_HOST: db
       DB_NAME: climbwall
     ports:
       - "5000:5000"
-    # Opcjonalnie – jeśli chcesz live-reload kodu z hosta
-    # volumes:
-    #   - .:/app
-
 volumes:
   db_data:

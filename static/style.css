@@ -1,6 +1,4 @@
-/* --------------------------------------------------
-   ZMIENNE KOLORÓW – LIGHT THEME
--------------------------------------------------- */
+
 :root {
     --color-bg: #f3f7f4;
     --color-bg-card: #ffffff;
@@ -16,9 +14,6 @@
     --radius-pill: 999px;
 }
 
-/* --------------------------------------------------
-   DARK THEME – nadpisanie zmiennych
--------------------------------------------------- */
 body.dark-theme {
     --color-bg: #020617;
     --color-bg-card: #020617;
@@ -32,9 +27,6 @@ body.dark-theme {
     --shadow-soft: 0 10px 30px rgba(0, 0, 0, 0.8);
 }
 
-/* --------------------------------------------------
-   GLOBAL
--------------------------------------------------- */
 *,
 *::before,
 *::after {
@@ -58,9 +50,6 @@ main {
     margin: 0 auto 40px auto;
 }
 
-/* --------------------------------------------------
-   HEADER
--------------------------------------------------- */
 .main-header {
     background: linear-gradient(90deg, var(--color-bg-header), #15803d);
     color: #ecfdf5;
@@ -135,9 +124,6 @@ nav a:hover {
     text-decoration: underline;
 }
 
-/* --------------------------------------------------
-   THEME TOGGLE BUTTON
--------------------------------------------------- */
 .theme-toggle-btn {
     border-radius: var(--radius-pill);
     border: 1px solid rgba(209, 250, 229, 0.7);
@@ -161,9 +147,6 @@ body.dark-theme .theme-toggle-btn {
     border-color: rgba(187, 247, 208, 0.8);
 }
 
-/* --------------------------------------------------
-   FLASH MESSAGES
--------------------------------------------------- */
 .flash-container {
     max-width: 1200px;
     margin: 12px auto 0 auto;
@@ -201,9 +184,6 @@ body.dark-theme .flash-error {
     border-color: rgba(248, 113, 113, 0.5);
 }
 
-/* --------------------------------------------------
-   TYPOGRAFIA / LAYOUT PODSTAWOWY
--------------------------------------------------- */
 h1, h2, h3 {
     margin-top: 0;
     color: var(--color-text);
@@ -224,9 +204,6 @@ p {
     color: var(--color-text);
 }
 
-/* --------------------------------------------------
-   ROUTES GRID – DUŻE KAFELKI
--------------------------------------------------- */
 .routes-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
@@ -291,9 +268,6 @@ p {
     text-decoration: underline;
 }
 
-/* --------------------------------------------------
-   ROUTE DETAIL PAGE
--------------------------------------------------- */
 .route-detail {
     max-width: 900px;
     margin: 0 auto;
@@ -344,9 +318,6 @@ p {
     height: 100%;
 }
 
-/* --------------------------------------------------
-   FILTRY NAD LISTĄ DRÓG
--------------------------------------------------- */
 .filters {
     display: flex;
     flex-wrap: wrap;
@@ -389,9 +360,6 @@ p {
     transform: translateY(-1px);
 }
 
-/* --------------------------------------------------
-   FORMULARZE
--------------------------------------------------- */
 form label {
     display: block;
     margin-bottom: 10px;
@@ -445,9 +413,6 @@ button[type="submit"]:active {
     box-shadow: 0 4px 10px rgba(22, 163, 74, 0.4);
 }
 
-/* --------------------------------------------------
-   TABELA W PANELU ADMINA
--------------------------------------------------- */
 table {
     width: 100%;
     border-collapse: collapse;
@@ -473,9 +438,7 @@ tbody tr:hover {
     background: rgba(22, 163, 74, 0.03);
 }
 
-/* --------------------------------------------------
-   STOPKA
--------------------------------------------------- */
+
 footer {
     background: var(--color-bg-footer);
     color: #e5e7eb;
@@ -484,9 +447,7 @@ footer {
     font-size: 0.85rem;
 }
 
-/* --------------------------------------------------
-   RESPONSYWNOŚĆ
--------------------------------------------------- */
+
 @media (max-width: 768px) {
     .main-header {
         flex-direction: column;
@@ -511,9 +472,7 @@ footer {
         padding-inline: 16px;
     }
 }
-/* --------------------------------------------------
-   BADGE (WYCENA, TYP, SEKTOR)
--------------------------------------------------- */
+
 .route-badges,
 .route-card-badges {
     display: flex;
@@ -553,7 +512,6 @@ footer {
     border-color: rgba(245, 158, 11, 0.5);
 }
 
-/* w dark mode trochę mocniejsze kolory */
 body.dark-theme .badge {
     background: rgba(15, 23, 42, 0.7);
     border-color: rgba(148, 163, 184, 0.5);

@@ -8,10 +8,6 @@ from functools import wraps
 
 app = Flask(__name__)
 
-# -------------------------------------------------------
-# KONFIGURACJA
-# -------------------------------------------------------
-
 DB_USER = os.getenv("DB_USER", "user")
 DB_PASSWORD = os.getenv("DB_PASSWORD", "password")
 DB_HOST = os.getenv("DB_HOST", "localhost")
@@ -22,19 +18,13 @@ app.config["SQLALCHEMY_DATABASE_URI"] = (
 )
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 
-# sekretny klucz do sesji (cookie)
 app.secret_key = os.getenv("SECRET_KEY", "dev-secret-key-change-me")
 
-# Folder na uploadowane zdjęcia
 UPLOAD_FOLDER = os.path.join("static", "uploads")
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 app.config["UPLOAD_FOLDER"] = UPLOAD_FOLDER
 
 db = SQLAlchemy(app)
-
-# -------------------------------------------------------
-# MODELE BAZY DANYCH
-# -------------------------------------------------------
 
 class Route(db.Model):
     __tablename__ = "routes"
@@ -42,12 +32,12 @@ class Route(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(100), nullable=False)
     grade = db.Column(db.String(10), nullable=False)
-    type = db.Column(db.String(20), nullable=False)  # "boulder" / "lina"
+    type = db.Column(db.String(20), nullable=False)
     sector = db.Column(db.String(50), nullable=False)
     description = db.Column(db.Text)
     image_path = db.Column(db.String(255))
     video_url = db.Column(db.String(255))
-    created_by = db.Column(db.Integer)  # na później, jak podepniemy users
+    created_by = db.Column(db.Integer)
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
     updated_at = db.Column(
         db.DateTime,
@@ -71,17 +61,10 @@ class User(db.Model):
         return f"<User {self.email} ({self.role})>"
 
 
-# -------------------------------------------------------
-# INICJALIZACJA BAZY – tabele + przykładowe dane + domyślny admin
-# -------------------------------------------------------
-
 def init_db():
-    """Tworzy tabele i wrzuca przykładowe dane, jeśli baza jest pusta.
-       Dodaje też domyślnego admina, jeśli go nie ma.
-    """
+
     db.create_all()
 
-    # przykładowe drogi
     if Route.query.count() == 0:
         sample_routes = [
             Route(
@@ -127,13 +110,8 @@ with app.app_context():
     init_db()
 
 
-# -------------------------------------------------------
-# POMOCNICZE: kontekst + dekorator admin_required
-# -------------------------------------------------------
-
 @app.context_processor
 def inject_user():
-    """Umożliwia użycie current_user_* w szablonach."""
     return dict(
         current_user_email=session.get("user_email"),
         current_user_role=session.get("user_role"),
@@ -141,7 +119,6 @@ def inject_user():
 
 
 def admin_required(f):
-    """Dekorator – wymaga zalogowanego admina."""
     @wraps(f)
     def wrapper(*args, **kwargs):
         if session.get("user_role") != "admin":
@@ -149,11 +126,6 @@ def admin_required(f):
             return redirect(url_for("login"))
         return f(*args, **kwargs)
     return wrapper
-
-
-# -------------------------------------------------------
-# WIDOKI PUBLICZNE
-# -------------------------------------------------------
 
 @app.route("/")
 def index():
@@ -171,10 +143,6 @@ def route_detail(route_id):
     route = Route.query.get_or_404(route_id)
     return render_template("route_detail.html", route=route)
 
-# -------------------------------------------------------
-# LOGOWANIE / WYLOGOWANIE / (opcjonalnie rejestracja)
-# -------------------------------------------------------
-
 @app.route("/login", methods=["GET", "POST"])
 def login():
     if request.method == "POST":
@@ -187,20 +155,17 @@ def login():
             flash("Nieprawidłowy e-mail lub hasło.", "error")
             return render_template("login.html")
 
-        # logowanie OK – zapisujemy info w sesji
         session["user_id"] = user.id
         session["user_email"] = user.email
         session["user_role"] = user.role
 
         flash("Zalogowano pomyślnie.", "success")
 
-        # jak admin – leć do panelu, jak zwykły user – na stronę główną
         if user.role == "admin":
             return redirect(url_for("admin"))
         else:
             return redirect(url_for("index"))
 
-    # GET – pokaż formularz logowania
     return render_template("login.html")
 
 
@@ -211,7 +176,6 @@ def logout():
     return redirect(url_for("index"))
 
 
-# (opcjonalnie) rejestracja zwykłego użytkownika – jeśli będzie potrzebna
 @app.route("/register", methods=["GET", "POST"])
 def register():
     if request.method == "POST":
@@ -238,15 +202,7 @@ def register():
         flash("Konto utworzone. Możesz się zalogować.", "success")
         return redirect(url_for("login"))
 
-    # jak nie chcesz rejestracji – możesz tej trasy w ogóle nie używać
     return render_template("register.html")
-    # UWAGA: na razie nie tworzymy register.html, więc jeśli nie używasz
-    # tej funkcji, możesz ją spokojnie skasować albo zakomentować.
-
-
-# -------------------------------------------------------
-# PANEL ADMINA (chroniony)
-# -------------------------------------------------------
 
 @app.route("/admin")
 @admin_required
@@ -380,10 +336,6 @@ def delete_route(route_id):
 
     return redirect(url_for("admin"))
 
-
-# -------------------------------------------------------
-# START APLIKACJI
-# -------------------------------------------------------
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=5000, debug=True)
