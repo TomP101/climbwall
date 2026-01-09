@@ -73,7 +73,7 @@ document.addEventListener("DOMContentLoaded", () => {
     function updateThemeButtonLabel(theme) {
         if (!themeToggle) return;
         if (theme === "dark") {
-            themeToggle.textContent = "☀️ Tryb jasny";
+            themeToggle.textContent = "☀️ Tryb przyjemny";
         } else {
             themeToggle.textContent = "🌙 Tryb ciemny";
         }
