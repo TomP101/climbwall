@@ -16,7 +16,9 @@
                 <li><a href="{{ url_for('routes') }}">Drogi</a></li>
                 <li><a href="{{ url_for('login') }}">Logowanie</a></li>
                 <li><a href="{{ url_for('register') }}">Rejestracja</a></li>
-                <li><a href="{{ url_for('admin') }}">Panel admina</a></li>
+                {% if current_user_role == 'admin' %}
+                  <li><a href="{{ url_for('admin') }}">Panel admina</a></li>
+                {% endif %}
 
             </ul>
         </nav>
